@@ -19,14 +19,14 @@ export const CalendarDay: FC<Props> = ({ date, activityEntry }) => {
       <time
         className={cn("text-4xl absolute", {
           "text-green-950": isCompleted,
-          "text-gray-400": !isCompleted,
+          "text-gray-200": !isCompleted,
         })}
         dateTime={date.toISOString()}
       >
         {date.getDate()}
       </time>
       {activityEntry ? (
-        <p className="absolute bottom-[20%] text-xs text-center">
+        <p className="absolute bottom-[10%] text-xs text-center mx-2 leading-tight">
           {activityEntry.name}
         </p>
       ) : null}
