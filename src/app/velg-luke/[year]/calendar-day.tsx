@@ -13,7 +13,7 @@ export const CalendarDay: FC<Props> = ({ date, activityEntry }) => {
     <li
       className={cn("aspect-square flex items-center justify-center relative", {
         "bg-gray-200 border border-solid text-black": isCompleted,
-        "border border-dashed text-white": !isCompleted,
+        "paint-dashed-border text-white": !isCompleted,
       })}
     >
       <time

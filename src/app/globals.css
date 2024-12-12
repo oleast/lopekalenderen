@@ -17,3 +17,19 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.paint-dashed-border {
+  --border-thickness: 2;
+  --border-length: 4;
+  --border-gap: 8;
+  --border-dash-cap: round;
+  --border-color: white;
+  background: paint(dashed-border);
+
+  &:hover {
+    --border-thickness: 2;
+    --border-length: 100;
+    --border-gap: -1;
+    --border-color: white;
+  }
+}
