@@ -1,7 +1,7 @@
 export interface ActivityEntry {
   id: number;
-  date: Date;
+  startDate: Date;
   calendarDistance: number;
-  actualDistance: number;
+  actualDistance: string;
   name: string;
 }

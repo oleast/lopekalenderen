@@ -1,14 +1,14 @@
-import { FC } from "react";
-import { ActivityEntry } from "./activity-entry";
+import { FC, Fragment } from "react";
 import cn from "classnames";
+import { ActivityDay } from "@/business/activities/map-activities-to-days";
 
 interface Props {
   date: Date;
-  activityEntry: ActivityEntry | null;
+  activityDay: ActivityDay | null;
 }
 
-export const CalendarDay: FC<Props> = ({ date, activityEntry }) => {
-  const isCompleted = activityEntry !== null;
+export const CalendarDay: FC<Props> = ({ date, activityDay }) => {
+  const isCompleted = activityDay !== null;
   return (
     <li
       className={cn("aspect-square flex items-center justify-center relative", {
@@ -25,9 +25,31 @@ export const CalendarDay: FC<Props> = ({ date, activityEntry }) => {
       >
         {date.getDate()}
       </time>
-      {activityEntry ? (
+      {activityDay ? (
         <p className="absolute bottom-[10%] text-xs text-center mx-2 leading-tight">
-          {activityEntry.name}
+          {activityDay.type === "single" && (
+            <span>
+              {activityDay.activity.name} ({activityDay.activity.actualDistance}
+              &nbsp;km)
+            </span>
+          )}
+          {activityDay.type === "double" && (
+            <span>
+              {activityDay.activities[0].name} (
+              {activityDay.activities[0].actualDistance}&nbsp;km) +{" "}
+              {activityDay.activities[1].name} (
+              {activityDay.activities[1].actualDistance}&nbsp;km)
+            </span>
+          )}
+          {activityDay.type === "composite" && (
+            <span>
+              {activityDay.activities.map((a) => (
+                <Fragment key={a.id}>
+                  {a.name} ({a.actualDistance}&nbsp;km){" "}
+                </Fragment>
+              ))}
+            </span>
+          )}
         </p>
       ) : null}
     </li>

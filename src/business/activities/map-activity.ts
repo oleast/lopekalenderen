@@ -1,5 +1,5 @@
 import { Activity } from "@/integrations/strava/models/activity";
-import { ActivityEntry } from "./activity-entry";
+import { ActivityEntry } from "../../app/velg-luke/[year]/activity-entry";
 
 const emojiNumberMap: Record<string, string> = {
   "0️⃣": "0",
@@ -42,6 +42,6 @@ export const mapActivity = (activity: Activity): ActivityEntry => ({
   id: activity.id,
   name: parseActivityName(activity.name),
   calendarDistance: parseCalendarDistance(activity),
-  date: new Date(activity.start_date_local),
-  actualDistance: Math.floor(activity.distance / 1000),
+  startDate: new Date(activity.start_date_local),
+  actualDistance: (activity.distance / 1000).toFixed(2),
 });
