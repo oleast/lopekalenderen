@@ -60,6 +60,7 @@ const CalendarYearPage: FC<{ params: Promise<Params> }> = async ({
       <p className="text-4xl text-center mb-8">
         <i>{totalDistance}</i> / {goalTotal} km
       </p>
+      {/*
       <p className="text-4xl text-center mb-8">
         <i>
           {(
@@ -69,6 +70,7 @@ const CalendarYearPage: FC<{ params: Promise<Params> }> = async ({
         </i>{" "}
         / {(goalTotal / dates.length).toFixed(2)} km
       </p>
+      */}
       <ul className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-6">
         {dates.map((date) => (
           <CalendarDay

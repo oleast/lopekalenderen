@@ -49,25 +49,19 @@ export const mapActivitiesToDays = (activities: Activity[]): ActivityDay[] => {
     }
   }
   for (const [dayNumber, activities] of activitiesByDay) {
-    const emptyComposite: ActivityDayComposite = {
-      dayNumber: 0,
-      type: "composite",
-      activities: [],
-    };
-    const compositeAcitivity = activities.reduce<ActivityDayComposite>(
-      (composite, activity) => ({
-        dayNumber: composite.dayNumber + activity.calendarDistance,
-        type: "composite",
-        activities: [...composite.activities, activity],
-      }),
-      emptyComposite
-    );
-    const totalCalendarDistance = compositeAcitivity.activities.reduce(
-      (accumulated, activity) => accumulated + activity.calendarDistance,
+    const totalActualDistance = activities.reduce<number>(
+      (acc, activity) => acc + activity.actualDistance,
       0
     );
-    if (!activityMap.has(totalCalendarDistance)) {
-      activityMap.set(totalCalendarDistance, compositeAcitivity);
+
+    const compositeAcitivity: ActivityDayComposite = {
+      dayNumber: Math.floor(totalActualDistance),
+      type: "composite",
+      activities,
+    };
+
+    if (!activityMap.has(compositeAcitivity.dayNumber)) {
+      activityMap.set(compositeAcitivity.dayNumber, compositeAcitivity);
       activitiesByDay.delete(dayNumber);
     }
   }

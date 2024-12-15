@@ -43,5 +43,5 @@ export const mapActivity = (activity: Activity): ActivityEntry => ({
   name: parseActivityName(activity.name),
   calendarDistance: parseCalendarDistance(activity),
   startDate: new Date(activity.start_date_local),
-  actualDistance: (activity.distance / 1000).toFixed(2),
+  actualDistance: activity.distance / 1000,
 });
