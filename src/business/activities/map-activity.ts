@@ -20,16 +20,21 @@ const replaceEmojiNumbers = (text: string): string => {
   });
 };
 
+const lukeRegex = /luke (?<luke>(\d+){1,2})/i;
+const calibrationRegex = /\((?<distance>\d+(\.\d+)?)\ km\)/i;
+
 const parseActivityName = (name: string): string => {
   const lukeRegex = /luke (?<luke>(\d+){1,2})/i;
   const nameWithoutEmojiNumbers = replaceEmojiNumbers(name);
   const nameWithoutLuke = nameWithoutEmojiNumbers.replace(lukeRegex, "").trim();
-  const nameCleaned = nameWithoutLuke.replace(/[:\-\/\|]+$/, "").trim();
+  const nameWithoutCalibration = nameWithoutLuke
+    .replace(calibrationRegex, "")
+    .trim();
+  const nameCleaned = nameWithoutCalibration.replace(/[:\-\/\|]+$/, "").trim();
   return nameCleaned;
 };
 
 const parseCalendarDistance = (activity: Activity): number => {
-  const lukeRegex = /luke (?<luke>(\d+){1,2})/i;
   const activityName = replaceEmojiNumbers(activity.name);
   const match = activityName.match(lukeRegex);
   if (match && match.groups?.luke) {
@@ -38,10 +43,18 @@ const parseCalendarDistance = (activity: Activity): number => {
   return Math.floor(activity.distance / 1000);
 };
 
+const parseActivityDistance = (activity: Activity): number => {
+  const match = activity.name.match(calibrationRegex);
+  if (match && match.groups?.distance) {
+    return Number(match.groups.distance);
+  }
+  return activity.distance / 1000;
+};
+
 export const mapActivity = (activity: Activity): ActivityEntry => ({
   id: activity.id,
   name: parseActivityName(activity.name),
   calendarDistance: parseCalendarDistance(activity),
   startDate: new Date(activity.start_date_local),
-  actualDistance: activity.distance / 1000,
+  actualDistance: parseActivityDistance(activity),
 });

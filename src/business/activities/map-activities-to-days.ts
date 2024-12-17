@@ -40,7 +40,7 @@ export const mapActivitiesToDays = (activities: Activity[]): ActivityDay[] => {
   for (const [dayNumber, activities] of activitiesByDay) {
     if (activities?.length === 1) {
       const activity = activities[0];
-      activityMap.set(dayNumber, {
+      activityMap.set(activity.calendarDistance, {
         dayNumber: activity.calendarDistance,
         type: "single",
         activity: activity,
