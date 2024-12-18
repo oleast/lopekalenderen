@@ -16,7 +16,8 @@ interface ActivityDaySingle extends ActivityDayBase {
 
 interface ActivityDayDouble extends ActivityDayBase {
   type: "double";
-  activities: [ActivityEntry, ActivityEntry];
+  activity: ActivityEntry;
+  siblingActivity: ActivityEntry;
 }
 
 interface ActivityDayComposite extends ActivityDayBase {
@@ -66,20 +67,31 @@ export const mapActivitiesToDays = (activities: Activity[]): ActivityDay[] => {
     }
   }
   for (const [dayNumber, activities] of activitiesByDay) {
-    const sortedActivities = activities.sort(
+    if (activities.length !== 2) {
+      continue;
+    }
+    const [activityA, activityB] = activities.sort(
       (a, b) => a.calendarDistance - b.calendarDistance
     );
-    const activityDay: ActivityDayDouble = {
-      dayNumber: dayNumber,
+    const activityDayA: ActivityDayDouble = {
       type: "double",
-      activities: [sortedActivities[0], sortedActivities[1]],
+      dayNumber: activityA.calendarDistance,
+      activity: activityA,
+      siblingActivity: activityB,
     };
-    const totalCalendarDistance = activityDay.activities.reduce(
-      (acc, activity) => acc + activity.calendarDistance,
-      0
-    );
-    if (!activityMap.has(totalCalendarDistance)) {
-      activityMap.set(totalCalendarDistance, activityDay);
+    const activityDayB: ActivityDayDouble = {
+      type: "double",
+      dayNumber: activityB.calendarDistance,
+      activity: activityB,
+      siblingActivity: activityA,
+    };
+
+    if (
+      !activityMap.has(activityDayA.dayNumber) &&
+      !activityMap.has(activityDayB.dayNumber)
+    ) {
+      activityMap.set(activityDayA.dayNumber, activityDayA);
+      activityMap.set(activityDayB.dayNumber, activityDayB);
       activitiesByDay.delete(dayNumber);
     }
   }

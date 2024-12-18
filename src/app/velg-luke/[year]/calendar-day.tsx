@@ -36,10 +36,10 @@ export const CalendarDay: FC<Props> = ({ date, activityDay }) => {
           )}
           {activityDay.type === "double" && (
             <span>
-              {activityDay.activities[0].name} (
-              {activityDay.activities[0].actualDistance.toFixed(2)}&nbsp;km) +{" "}
-              {activityDay.activities[1].name} (
-              {activityDay.activities[1].actualDistance.toFixed(2)}&nbsp;km)
+              {activityDay.activity.name} (
+              {activityDay.activity.actualDistance.toFixed(2)}&nbsp;km) +{" "}
+              {activityDay.siblingActivity.name} (
+              {activityDay.siblingActivity.actualDistance.toFixed(2)}&nbsp;km)
             </span>
           )}
           {activityDay.type === "composite" && (
